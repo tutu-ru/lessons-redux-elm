@@ -17,7 +17,7 @@ export default view (({ model, dispatch, onSubmit }) => {
                 type="text"
                 value={model.value}
                 onChange={(e) => dispatch(change(e.target.value))}
-            />
+            />            
         </form>
     )
 });
