@@ -1,25 +1,20 @@
 import React from 'react';
 import { view, forwardTo } from 'redux-elm';
 
+import List from '../List/view';
 import InputForm from '../InputForm/view';
 import Filters from '../Filters/view';
-import Todo from '../Todo/view';
 
 import { addTodo, setFilter } from './actions';
-import filter from './filter';
+
 
 export default view (({ model, dispatch }) => (
     <div>
-        <ul>
-            {filter(model.todos, model.filter).map((todo, index) =>
-                <li key={index}>
-                    <Todo
-                        model={todo}
-                        dispatch={forwardTo(dispatch, 'Todo', index)}
-                    />
-                </li>
-            )}
-        </ul>
+        <List
+            model={model.list}
+            filter={model.filter}
+            dispatch={forwardTo(dispatch, 'List')}
+        />
 
         <InputForm
             model={model.form}

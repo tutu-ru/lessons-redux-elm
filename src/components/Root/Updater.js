@@ -1,15 +1,15 @@
-import { Updater, Matchers } from 'redux-elm';
+import { Updater } from 'redux-elm';
 
 import InputForm, { init as inputFormInit } from '../InputForm/Updater';
 import Filters, { init as filtersInit } from '../Filters/Updater';
-import Todo, { init as todoInit } from '../Todo/Updater';
+import List, { init as listInit, addTodo } from '../List/Updater';
 
 import { ADD_TODO, SET_FILTER } from './actions';
 
 const initialState = {
     form: inputFormInit('hello-world'),
     filters: filtersInit(['All', 'Done', 'Active']),
-    todos: ['hey', 'ho', 'let\'s go'].map(todo => todoInit(todo)),
+    list: listInit(['hey', 'ho', 'let\'s go']),
     filter: null
 };
 
@@ -22,13 +22,7 @@ export default new Updater(initialState)
     // и отмечаем выбранный
     .case('Filters', (model, action) => ({...model, filters: Filters(model.filters, action)}))
 
-    // меняем значение тудушек
-    // т.к. у нас их целый список, то
-    // тут необходимо использовать
-    // parameterizedMatcher
-    .case('Todo', (model, action) => ({...model, todos: model.todos.map((todo, index) =>
-        index === parseInt(action.matching.args.param) ? Todo(todo, action) : todo
-    )}), Matchers.parameterizedMatcher)
+    .case('List', (model, action) => ({...model, list: List(model.list, action)}))
 
     // добавляем todo
     // используем ф-ию todoInit для
@@ -37,7 +31,7 @@ export default new Updater(initialState)
         const { payload } = action;
 
         if (payload) {
-            return {...model, todos: [...model.todos, todoInit(payload)]}
+            return {...model, list: addTodo(model.list, payload)}
         }
 
         return model;

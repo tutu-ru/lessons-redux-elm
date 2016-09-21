@@ -10,7 +10,9 @@ export const init = (todo) => {
         completed: false,
         title: todo
     };
-};
+}; 
+
+export const compare = (oldTodo, newTodo) => oldTodo.title === newTodo.title;
 
 export default new Updater(init())
     .case(CHANGE, (model) => ({...model, completed: !model.completed}))
